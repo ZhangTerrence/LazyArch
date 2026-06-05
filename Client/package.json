@@ -12,10 +12,12 @@
 		"prepare": "cd .. && husky Client/.husky"
 	},
 	"dependencies": {
+		"@tailwindcss/vite": "^4.2.4",
 		"@tanstack/react-router": "^1.169.1",
 		"@tanstack/router-plugin": "^1.167.33",
 		"react": "^19.2.5",
-		"react-dom": "^19.2.5"
+		"react-dom": "^19.2.5",
+		"tailwindcss": "^4.2.4"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.29.0",

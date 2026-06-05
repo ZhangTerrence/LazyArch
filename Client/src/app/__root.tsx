@@ -3,22 +3,23 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRoute({
 	component: RootComponent,
+	head: () => ({}),
 });
 
 function RootComponent() {
 	return (
 		<>
-			<div className="p-2 flex gap-2 text-lg">
+			<div className="">
 				<Link
 					to="/"
 					activeProps={{
-						className: "font-bold",
+						className: "",
 					}}
 					activeOptions={{ exact: true }}
 				>
 					Home
 				</Link>
-				<Link to="/about" className="[&.active]:font-bold">
+				<Link to="/about" className="">
 					About
 				</Link>
 			</div>
