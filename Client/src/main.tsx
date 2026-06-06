@@ -1,6 +1,9 @@
+import { MantineProvider } from "@mantine/core";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+
+import "@mantine/core/styles.css";
 import "./index.css";
 
 // Import the generated route tree
@@ -27,7 +30,9 @@ if (!rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement);
 	root.render(
 		<StrictMode>
-			<RouterProvider router={router} />
+			<MantineProvider>
+				<RouterProvider router={router} />
+			</MantineProvider>
 		</StrictMode>,
 	);
 }
