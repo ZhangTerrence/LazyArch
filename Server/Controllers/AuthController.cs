@@ -50,6 +50,8 @@ public class AuthController : ControllerBase
         result = await _userManager.AddToRoleAsync(user, "User");
         if (!result.Succeeded) return IdentityError(result);
 
+        await _signInManager.SignInAsync(user, true);
+
         return Created();
     }
 
@@ -66,6 +68,14 @@ public class AuthController : ControllerBase
         await _signInManager.SignInAsync(user, true);
 
         return Ok();
+    }
+
+    [HttpDelete("Logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return NoContent();
     }
 
     [HttpGet("CheckAuth")]

@@ -1,9 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
+import { RegisterForm } from "../features/auth/components/register-form.tsx";
 
 export const Route = createFileRoute("/register")({
-  component: RouteComponent,
-})
+	component: RouteComponent,
+	validateSearch: () => {
+		const searchParams: {
+			redirect?: string;
+		} = {};
+		return searchParams;
+	},
+});
 
 function RouteComponent() {
-  return <div>Hello "/register"!</div>
+	return <RegisterForm />;
 }
