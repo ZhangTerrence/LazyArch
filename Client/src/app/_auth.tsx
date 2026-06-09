@@ -1,14 +1,13 @@
-﻿import { Button } from "@mantine/core";
 import {
 	createFileRoute,
 	isRedirect,
+	Outlet,
 	redirect,
-	useNavigate,
 } from "@tanstack/react-router";
 import { api } from "../lib/api.ts";
 
-export const Route = createFileRoute("/documents")({
-	component: Documents,
+export const Route = createFileRoute("/_auth")({
+	component: AuthLayout,
 	beforeLoad: async ({ location }) => {
 		try {
 			const response = await api.get("Api/Auth/CheckAuth");
@@ -35,22 +34,6 @@ export const Route = createFileRoute("/documents")({
 	},
 });
 
-function Documents() {
-	const navigate = useNavigate();
-
-	const logout = async () => {
-		const response = await api.delete("Api/Auth/Logout", {});
-		if (response.status === 204) {
-			await navigate({
-				to: "/",
-			});
-		}
-	};
-
-	return (
-		<div>
-			<h3>Dashboard</h3>
-			<Button onClick={logout}>Logout</Button>
-		</div>
-	);
+function AuthLayout() {
+	return <Outlet />;
 }
