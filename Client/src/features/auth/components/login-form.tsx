@@ -11,7 +11,7 @@ export const LoginForm = () => {
 		initialValues: UserLoginFormDefaults,
 	});
 	const navigate = useNavigate();
-	const search = useSearch({ from: "/login" });
+	const search = useSearch({ from: "/_public/login" });
 	const userLoginMutation = useUserLoginMutation({
 		options: {
 			onSuccess: async () => {

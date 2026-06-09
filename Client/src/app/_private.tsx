@@ -1,13 +1,16 @@
+import { AppShell, Button } from "@mantine/core";
 import {
 	createFileRoute,
 	isRedirect,
+	Link,
 	Outlet,
 	redirect,
+	useNavigate,
 } from "@tanstack/react-router";
 import { api } from "../lib/api.ts";
 
-export const Route = createFileRoute("/_auth")({
-	component: AuthLayout,
+export const Route = createFileRoute("/_private")({
+	component: PrivatePageLayout,
 	beforeLoad: async ({ location }) => {
 		try {
 			const response = await api.get("Api/Auth/CheckAuth");
@@ -34,6 +37,27 @@ export const Route = createFileRoute("/_auth")({
 	},
 });
 
-function AuthLayout() {
-	return <Outlet />;
+function PrivatePageLayout() {
+	const navigate = useNavigate();
+
+	const logout = async () => {
+		const response = await api.delete("Api/Auth/Logout", {});
+		if (response.status === 204) {
+			await navigate({
+				to: "/",
+			});
+		}
+	};
+
+	return (
+		<>
+			<AppShell.Header className="flex justify-between items-center px-4">
+				<Link to="/">LazyArch</Link>
+				<Button onClick={logout}>Logout</Button>
+			</AppShell.Header>
+			<AppShell.Main>
+				<Outlet />
+			</AppShell.Main>
+		</>
+	);
 }

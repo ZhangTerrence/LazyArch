@@ -11,7 +11,7 @@ export const RegisterForm = () => {
 		initialValues: RegisterUserFormDefaults,
 	});
 	const navigate = useNavigate();
-	const search = useSearch({ from: "/register" });
+	const search = useSearch({ from: "/_public/register" });
 	const registerUserMutation = useRegisterUserMutation({
 		options: {
 			onSuccess: async () => {

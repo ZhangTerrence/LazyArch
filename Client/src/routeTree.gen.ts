@@ -9,127 +9,159 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./app/__root"
-import { Route as RegisterRouteImport } from "./app/register"
-import { Route as LoginRouteImport } from "./app/login"
-import { Route as AuthRouteImport } from "./app/_auth"
-import { Route as IndexRouteImport } from "./app/index"
-import { Route as AuthDocumentsRouteImport } from "./app/_auth.documents"
+import { Route as PublicRouteImport } from "./app/_public"
+import { Route as PrivateRouteImport } from "./app/_private"
+import { Route as PublicIndexRouteImport } from "./app/_public.index"
+import { Route as PublicRegisterRouteImport } from "./app/_public.register"
+import { Route as PublicLoginRouteImport } from "./app/_public.login"
+import { Route as PrivateDocumentsRouteImport } from "./app/_private.documents"
 
-const RegisterRoute = RegisterRouteImport.update({
-  id: "/register",
-  path: "/register",
+const PublicRoute = PublicRouteImport.update({
+  id: "/_public",
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: "/login",
-  path: "/login",
+const PrivateRoute = PrivateRouteImport.update({
+  id: "/_private",
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: "/_auth",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: "/",
   path: "/",
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => PublicRoute,
 } as any)
-const AuthDocumentsRoute = AuthDocumentsRouteImport.update({
+const PublicRegisterRoute = PublicRegisterRouteImport.update({
+  id: "/register",
+  path: "/register",
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicLoginRoute = PublicLoginRouteImport.update({
+  id: "/login",
+  path: "/login",
+  getParentRoute: () => PublicRoute,
+} as any)
+const PrivateDocumentsRoute = PrivateDocumentsRouteImport.update({
   id: "/documents",
   path: "/documents",
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => PrivateRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute
-  "/login": typeof LoginRoute
-  "/register": typeof RegisterRoute
-  "/documents": typeof AuthDocumentsRoute
+  "/": typeof PublicIndexRoute
+  "/documents": typeof PrivateDocumentsRoute
+  "/login": typeof PublicLoginRoute
+  "/register": typeof PublicRegisterRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute
-  "/login": typeof LoginRoute
-  "/register": typeof RegisterRoute
-  "/documents": typeof AuthDocumentsRoute
+  "/": typeof PublicIndexRoute
+  "/documents": typeof PrivateDocumentsRoute
+  "/login": typeof PublicLoginRoute
+  "/register": typeof PublicRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  "/": typeof IndexRoute
-  "/_auth": typeof AuthRouteWithChildren
-  "/login": typeof LoginRoute
-  "/register": typeof RegisterRoute
-  "/_auth/documents": typeof AuthDocumentsRoute
+  "/_private": typeof PrivateRouteWithChildren
+  "/_public": typeof PublicRouteWithChildren
+  "/_private/documents": typeof PrivateDocumentsRoute
+  "/_public/login": typeof PublicLoginRoute
+  "/_public/register": typeof PublicRegisterRoute
+  "/_public/": typeof PublicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/" | "/login" | "/register" | "/documents"
+  fullPaths: "/" | "/documents" | "/login" | "/register"
   fileRoutesByTo: FileRoutesByTo
-  to: "/" | "/login" | "/register" | "/documents"
-  id: "__root__" | "/" | "/_auth" | "/login" | "/register" | "/_auth/documents"
+  to: "/" | "/documents" | "/login" | "/register"
+  id:
+    | "__root__"
+    | "/_private"
+    | "/_public"
+    | "/_private/documents"
+    | "/_public/login"
+    | "/_public/register"
+    | "/_public/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  LoginRoute: typeof LoginRoute
-  RegisterRoute: typeof RegisterRoute
+  PrivateRoute: typeof PrivateRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/register": {
-      id: "/register"
-      path: "/register"
-      fullPath: "/register"
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/login": {
-      id: "/login"
-      path: "/login"
-      fullPath: "/login"
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/_auth": {
-      id: "/_auth"
+    "/_public": {
+      id: "/_public"
       path: ""
       fullPath: "/"
-      preLoaderRoute: typeof AuthRouteImport
+      preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/": {
-      id: "/"
+    "/_private": {
+      id: "/_private"
+      path: ""
+      fullPath: "/"
+      preLoaderRoute: typeof PrivateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/_public/": {
+      id: "/_public/"
       path: "/"
       fullPath: "/"
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
     }
-    "/_auth/documents": {
-      id: "/_auth/documents"
+    "/_public/register": {
+      id: "/_public/register"
+      path: "/register"
+      fullPath: "/register"
+      preLoaderRoute: typeof PublicRegisterRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    "/_public/login": {
+      id: "/_public/login"
+      path: "/login"
+      fullPath: "/login"
+      preLoaderRoute: typeof PublicLoginRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    "/_private/documents": {
+      id: "/_private/documents"
       path: "/documents"
       fullPath: "/documents"
-      preLoaderRoute: typeof AuthDocumentsRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof PrivateDocumentsRouteImport
+      parentRoute: typeof PrivateRoute
     }
   }
 }
 
-interface AuthRouteChildren {
-  AuthDocumentsRoute: typeof AuthDocumentsRoute
+interface PrivateRouteChildren {
+  PrivateDocumentsRoute: typeof PrivateDocumentsRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthDocumentsRoute: AuthDocumentsRoute,
+const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateDocumentsRoute: PrivateDocumentsRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const PrivateRouteWithChildren =
+  PrivateRoute._addFileChildren(PrivateRouteChildren)
+
+interface PublicRouteChildren {
+  PublicLoginRoute: typeof PublicLoginRoute
+  PublicRegisterRoute: typeof PublicRegisterRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicLoginRoute: PublicLoginRoute,
+  PublicRegisterRoute: PublicRegisterRoute,
+  PublicIndexRoute: PublicIndexRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
-  LoginRoute: LoginRoute,
-  RegisterRoute: RegisterRoute,
+  PrivateRoute: PrivateRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
