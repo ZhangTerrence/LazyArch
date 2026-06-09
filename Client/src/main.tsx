@@ -12,10 +12,18 @@ import { queryClientConfig } from "./lib/react-query.ts";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
+// Initialize query client
+const queryClient = new QueryClient(queryClientConfig);
+
 // Create a new router instance
 const router = createRouter({
 	routeTree,
+	context: {
+		queryClient,
+	},
 	defaultPreload: "intent",
+	// Ensure that the loader is always called when the route is preloaded or visited
+	defaultPreloadStaleTime: 0,
 	scrollRestoration: true,
 });
 
@@ -25,9 +33,6 @@ declare module "@tanstack/react-router" {
 		router: typeof router;
 	}
 }
-
-// Initialize query client
-const queryClient = new QueryClient(queryClientConfig);
 
 // Render the app
 // biome-ignore lint/style/noNonNullAssertion: #root is always defined
