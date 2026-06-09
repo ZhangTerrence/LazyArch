@@ -1,10 +1,8 @@
 ﻿import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import {
-	UserLoginFormDefaults,
-	useUserLoginMutation,
-} from "../api/user-login.ts";
+import { userLogin, UserLoginFormDefaults } from "../api/user-login.ts";
 
 export const LoginForm = () => {
 	const form = useForm({
@@ -12,14 +10,13 @@ export const LoginForm = () => {
 	});
 	const navigate = useNavigate();
 	const search = useSearch({ from: "/_public/login" });
-	const userLoginMutation = useUserLoginMutation({
-		options: {
-			onSuccess: async () => {
-				await navigate({
-					to: search.redirect ?? "/documents",
-				});
-			},
+	const userLoginMutation = useMutation({
+		onSuccess: async () => {
+			await navigate({
+				to: search.redirect ?? "/documents",
+			});
 		},
+		mutationFn: userLogin,
 	});
 
 	return (

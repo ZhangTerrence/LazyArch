@@ -1,9 +1,10 @@
 ﻿import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
+	registerUser,
 	RegisterUserFormDefaults,
-	useRegisterUserMutation,
 } from "../api/register-user.ts";
 
 export const RegisterForm = () => {
@@ -12,14 +13,13 @@ export const RegisterForm = () => {
 	});
 	const navigate = useNavigate();
 	const search = useSearch({ from: "/_public/register" });
-	const registerUserMutation = useRegisterUserMutation({
-		options: {
-			onSuccess: async () => {
-				await navigate({
-					to: search.redirect ?? "/documents",
-				});
-			},
+	const registerUserMutation = useMutation({
+		onSuccess: async () => {
+			await navigate({
+				to: search.redirect ?? "/documents",
+			});
 		},
+		mutationFn: registerUser,
 	});
 
 	return (

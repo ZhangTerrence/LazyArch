@@ -7,13 +7,19 @@ import "@mantine/core/styles.css";
 import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { queryClientConfig } from "./lib/react-query.ts";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
 // Initialize query client
-const queryClient = new QueryClient(queryClientConfig);
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: false,
+			staleTime: 1000 * 60 * 60, // 1 hour
+		},
+	},
+});
 
 // Create a new router instance
 const router = createRouter({
